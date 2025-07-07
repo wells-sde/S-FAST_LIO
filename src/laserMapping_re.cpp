@@ -19,7 +19,7 @@
 #include <tf/transform_datatypes.h>
 #include <tf/transform_broadcaster.h>
 #include <geometry_msgs/Vector3.h>
-#include <livox_ros_driver/CustomMsg.h>
+#include <livox_ros_driver2/CustomMsg.h>
 #include "preprocess.h"
 #include <ikd-Tree/ikd_Tree.h>
 
@@ -123,7 +123,7 @@ void standard_pcl_cbk(const sensor_msgs::PointCloud2::ConstPtr &msg)
 
 double timediff_lidar_wrt_imu = 0.0;
 bool timediff_set_flg = false;
-void livox_pcl_cbk(const livox_ros_driver::CustomMsg::ConstPtr &msg)
+void livox_pcl_cbk(const livox_ros_driver2::CustomMsg::ConstPtr &msg)
 {
     mtx_buffer.lock();
     double preprocess_start_time = omp_get_wtime();
@@ -571,7 +571,7 @@ int main(int argc, char **argv)
     state_point = kf.get_x();
     state_point.pos = Eigen::Vector3d(init_pos[0], init_pos[1], init_pos[2]);
     Eigen::Quaterniond q(init_rot[3], init_rot[0], init_rot[1], init_rot[2]);
-    Sophus::SO3 SO3_q(q);
+    Sophus::SO3<double> SO3_q(q);
     state_point.rot = SO3_q;
     kf.change_x(state_point);
 
